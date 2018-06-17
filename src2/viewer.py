@@ -11,6 +11,8 @@ from OpenGL.GLUT import glutCreateWindow, glutDisplayFunc, glutGet, glutInit, gl
                         glutInitWindowSize, glutMainLoop, \
                         GLUT_SINGLE, GLUT_RGB, GLUT_WINDOW_HEIGHT, GLUT_WINDOW_WIDTH
 
+import pickle
+
 import numpy
 from numpy.linalg import norm, inv
 
@@ -18,6 +20,7 @@ from interaction import Interaction
 from primitive import init_primitives, G_OBJ_PLANE
 from node import Sphere, Cube, SnowFigure
 from scene import Scene
+
 
 
 class Viewer(object):
@@ -84,6 +87,8 @@ class Viewer(object):
         self.interaction.register_callback('place', self.place)
         self.interaction.register_callback('rotate_color', self.rotate_color)
         self.interaction.register_callback('scale', self.scale)
+        self.interaction.register_callback('save_cur_scene', self.save_cur_scene)
+        self.interaction.register_callback('load_new_scene', self.load_new_scene)
 
     def main_loop(self):
         glutMainLoop()
@@ -173,6 +178,21 @@ class Viewer(object):
     def scale(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
         self.scene.scale_selected(up)
+
+    def load_new_scene(self, file_name='t.save'):
+        """ Load a file and make a Scene object, then display it """
+        with open(file_name, 'rb') as f:
+            self.scene = pickle.load(f)
+            print("load new scene!!")
+        # raise NotImplementedError("load new scene function is not implemented!")
+    
+    def save_cur_scene(self, file_name='t.save'):
+        """ Save current scene object to a file using pickle """
+        with open(file_name, 'wb') as f:
+            pickle.dump(self.scene, f)
+            print("save cur scene!!")
+        # raise NotImplementedError("save scene function is not implemented!")
+
 
 
 if __name__ == "__main__":

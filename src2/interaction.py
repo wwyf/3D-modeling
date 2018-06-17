@@ -95,6 +95,10 @@ class Interaction(object):
             self.trigger('place', 'cube', x, y)
         elif key == 'f':
             self.trigger('place', 'figure', x, y)
+        elif key == 'o':
+            self.trigger('save_cur_scene', 'tt.save')
+        elif key == 'l':
+            self.trigger('load_new_scene', 'tt.save')
         elif key == GLUT_KEY_UP:
             self.trigger('scale', up=True)
         elif key == GLUT_KEY_DOWN:
