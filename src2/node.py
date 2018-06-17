@@ -7,7 +7,7 @@ from primitive import G_OBJ_CUBE, G_OBJ_SPHERE
 from aabb import AABB
 from transformation import scaling, translation
 import color
-import pyglm
+import glm
 
 class Node(object):
     """ Base class for scene elements """
@@ -156,6 +156,9 @@ class HierarchicalNode(Node):
     def render_self(self):
         for child in self.child_nodes:
             child.render()
+    def rotate_color(self, forwards):
+        for child in self.child_nodes:
+            child.rotate_color(forwards)
 
 class SnowFigure(HierarchicalNode):
     def __init__(self):
