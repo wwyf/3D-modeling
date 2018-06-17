@@ -95,25 +95,46 @@ class Viewer(object):
 
 在3D建模中，一个及其重要的部分就是3D场景的建造。关于该场景的编写，我们编写了一个可扩展性极强的Scene类。该类的主要接口有
 
+关于该类的功能，可以概括为以下几个部分
+
+2. 对该场景内节点的管理
+2. 对场景内某节点的选择及对节点的操作
+
+Scene类与Viewer类之间的关系
+
 ```python
 class Scene(object):
     def __init__(self)
     def add_node(self, node)
     def remove_node(self, node)
+    
     def render(self)
+    
     def pick(self, start, direction, mat)
     def move_selected(self, start, direction, inv_modelview)
     def place(self, shape, start, direction, inv_modelview)
     def rotate_selected_color(self, forwards)
-    def scale_selected(self, up):##################v
-    def scalex_selected(self, up):
-    def scaley_selected(self, up):
-    def scalez_selected(self, up):
-    def rotatex_selected(self, angle):
-    def rotatey_selected(self, angle):
+    def scale_selected(self, up)
+    def scalex_selected(self, up)
+    def scaley_selected(self, up)
+    def scalez_selected(self, up)
+    def rotatex_selected(self, angle)
+    def rotatey_selected(self, angle)
 ```
 
 
+
+| 函数名称    | 函数功能                 |
+| ----------- | ------------------------ |
+| add_node    | 在场景中增加一个节点     |
+| remove_node | 删除场景中指定的一个节点 |
+|             |                          |
+|             |                          |
+|             |                          |
+|             |                          |
+|             |                          |
+|             |                          |
+|             |                          |
 
 
 Scene
