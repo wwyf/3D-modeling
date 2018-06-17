@@ -137,7 +137,6 @@ Node类作为场景中一个个3D对象的基类，定义了在场景中的一�
 
 TODO:
 
-<<<<<<< HEAD
 #### Interaction
 ``` python
 class Interaction(object):
@@ -173,11 +172,6 @@ class Node(object):
 ```
 #### Primitive
 #### User Define Object
-=======
-#### Interaction类
-
-TODO:
->>>>>>> 05d04097b641addcddd7856a9e46367622abd00d
 
 
 ### 类间关系解释
