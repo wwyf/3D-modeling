@@ -82,7 +82,7 @@ class Viewer(object):
         self.scene.add_node(hierarchical_node)
 
         startpoint = Point(1, 1, 1)
-        endpoint = Point(0, 0, 0)
+        endpoint = Point(-1, -1, -1)
         line_node = Line(startpoint, endpoint)
         self.scene.add_node(line_node)
 
