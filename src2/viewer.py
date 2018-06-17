@@ -102,6 +102,7 @@ class Viewer(object):
         ########################################################^
         self.interaction.register_callback('save_cur_scene', self.save_cur_scene)
         self.interaction.register_callback('load_new_scene', self.load_new_scene)
+        self.interaction.register_callback('mouse_drag', self.mouse_drag)
 
     def main_loop(self):
         glutMainLoop()
@@ -191,7 +192,11 @@ class Viewer(object):
     def scale(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
         self.scene.scale_selected(up)
-
+    def mouse_drag(self, mouse_loc_x, mouse_loc_y, dx, dy):
+        if self.scene.selected_node is None:
+            self.interaction.trackball.drag_to(mouse_loc_x, mouse_loc_y, dx, dy)
+        else:
+            print('scene is no none')
     ###############################################################v
     def scalex(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""

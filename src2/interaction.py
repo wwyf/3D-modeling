@@ -75,7 +75,7 @@ class Interaction(object):
             dy = y - self.mouse_loc[1]
             if self.pressed == GLUT_RIGHT_BUTTON and self.trackball is not None:
                 # ignore the updated camera loc because we want to always rotate around the origin
-                self.trackball.drag_to(self.mouse_loc[0], self.mouse_loc[1], dx, dy)
+                self.trigger('mouse_drag', self.mouse_loc[0], self.mouse_loc[1], dx, dy)
             elif self.pressed == GLUT_LEFT_BUTTON:
                 self.trigger('move', x, y)
             elif self.pressed == GLUT_MIDDLE_BUTTON:
