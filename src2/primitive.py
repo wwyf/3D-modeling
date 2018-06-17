@@ -5,13 +5,16 @@ from OpenGL.GLU import gluDeleteQuadric, gluNewQuadric, gluSphere
 G_OBJ_PLANE = 1
 G_OBJ_SPHERE = 2
 G_OBJ_CUBE = 3
+G_OBJ_LINE = 4
 
 
 def make_plane():
     glNewList(G_OBJ_PLANE, GL_COMPILE)
+    glLineWidth(1)
     glBegin(GL_LINES)
     glColor3f(0, 0, 0)
     for i in xrange(41):
+        pass
         glVertex3f(-10.0 + 0.5 * i, 0, -10)
         glVertex3f(-10.0 + 0.5 * i, 0, 10)
         glVertex3f(-10.0, 0, -10 + 0.5 * i)
@@ -93,6 +96,7 @@ def make_cube():
             glVertex3f(vertices[i][j][0], vertices[i][j][1], vertices[i][j][2])
     glEnd()
     glEndList()
+    
 
 
 def init_primitives():

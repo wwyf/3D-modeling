@@ -20,6 +20,8 @@ from interaction import Interaction
 from primitive import init_primitives, G_OBJ_PLANE
 from node import Sphere, Cube, SnowFigure
 from scene import Scene
+from Lines import Line
+from Lines import Point
 
 
 
@@ -78,6 +80,12 @@ class Viewer(object):
         hierarchical_node = SnowFigure()
         hierarchical_node.translate(-2, 0, -2)
         self.scene.add_node(hierarchical_node)
+
+        startpoint = Point(1, 1, 1)
+        endpoint = Point(0, 0, 0)
+        line_node = Line(startpoint, endpoint)
+        self.scene.add_node(line_node)
+
 
     def init_interaction(self):
         """ init user interaction and callbacks """
