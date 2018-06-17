@@ -1,6 +1,6 @@
 import random
-from OpenGL.GL import glCallList, glColor3f, glMaterialfv, glMultMatrixf, glPopMatrix, glPushMatrix, \
-                      GL_EMISSION, GL_FRONT
+from OpenGL.GL import *
+from OpenGL.GLUT import *
 import numpy
 
 from primitive import G_OBJ_CUBE, G_OBJ_SPHERE
@@ -8,15 +8,47 @@ from aabb import AABB
 from transformation import scaling, translation
 import color
 
-
 class Node(object):
     """ Base class for scene elements """
     def __init__(self):
+        self.sizevec = [0.5,0.5,0.5]
         self.color_index = random.randint(color.MIN_COLOR, color.MAX_COLOR)
-        self.aabb = AABB([0.0, 0.0, 0.0], [0.5, 0.5, 0.5])
+        self.aabb = AABB([0.0, 0.0, 0.0], self.sizevec)
         self.translation_matrix = numpy.identity(4)
         self.scaling_matrix = numpy.identity(4)
         self.selected = False
+
+    def drawWireCuboid(self):
+        glBegin(GL_LINES)
+        glVertex3f(self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(-self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+        glVertex3f(self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+        glVertex3f(self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+
+        glVertex3f(self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+        glVertex3f(self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+        glVertex3f(self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+
+        glVertex3f(-self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(-self.sizevec[0], self.sizevec[1], -self.sizevec[2])
+        glVertex3f(-self.sizevec[0], self.sizevec[1], self.sizevec[2])
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+
+        glVertex3f(self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+        glVertex3f(self.sizevec[0], -self.sizevec[1], -self.sizevec[2])
+        glVertex3f(self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+        glVertex3f(-self.sizevec[0], -self.sizevec[1], self.sizevec[2])
+        glEnd()
 
     def render(self):
         """ renders the item to the screen """
@@ -27,6 +59,7 @@ class Node(object):
         glColor3f(cur_color[0], cur_color[1], cur_color[2])
         if self.selected:  # emit light if the node is selected
             glMaterialfv(GL_FRONT, GL_EMISSION, [0.3, 0.3, 0.3])
+            self.drawWireCuboid()
         
         self.render_self()
         if self.selected:
@@ -59,6 +92,8 @@ class Node(object):
         # transform the modelview matrix by the current translation
         newmat = numpy.dot(numpy.dot(mat, self.translation_matrix), numpy.linalg.inv(self.scaling_matrix))
         results = self.aabb.ray_hit(start, direction, newmat)
+        if results == (False, 0):
+            self.aabb = AABB([0.0, 0.0, 0.0], self.sizevec)
         return results
 
     def select(self, select=None):
@@ -113,4 +148,5 @@ class SnowFigure(HierarchicalNode):
         self.child_nodes[2].scaling_matrix = numpy.dot(self.scaling_matrix, scaling([0.7, 0.7, 0.7]))
         for child_node in self.child_nodes:
             child_node.color_index = color.MIN_COLOR
-        self.aabb = AABB([0.0, 0.0, 0.0], [0.5, 1.1, 0.5])
+        self.sizevec = [0.5, 1.1, 0.5]
+        self.aabb = AABB([0.0, 0.0, 0.0], self.sizevec)
