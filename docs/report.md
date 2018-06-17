@@ -91,7 +91,35 @@ class Viewer(object):
 
 
 
+#### Scene类
+
+在3D建模中，一个及其重要的部分就是3D场景的建造。关于该场景的编写，我们编写了一个可扩展性极强的Scene类。该类的主要接口有
+
+```python
+class Scene(object):
+    def __init__(self)
+    def add_node(self, node)
+    def remove_node(self, node)
+    def render(self)
+    def pick(self, start, direction, mat)
+    def move_selected(self, start, direction, inv_modelview)
+    def place(self, shape, start, direction, inv_modelview)
+    def rotate_selected_color(self, forwards)
+    def scale_selected(self, up):##################v
+    def scalex_selected(self, up):
+    def scaley_selected(self, up):
+    def scalez_selected(self, up):
+    def rotatex_selected(self, angle):
+    def rotatey_selected(self, angle):
+```
+
+
+
+
 Scene
+
+
+
 Interaction
 Node
 Primitive
@@ -122,7 +150,3 @@ interaction类 与 scene 类 之间的关系
 	项目分工
 	时间轴？ 
 	
-
-
-
-、3.项目分工情况 +  C
