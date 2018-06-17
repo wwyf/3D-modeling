@@ -130,10 +130,41 @@ Scene
 
 
 
-Interaction
-Node
-Primitive
-User Define Object
+#### Interaction
+``` python
+class Interaction(object):
+    def __init__(self):
+    def register(self):
+    def register_callback(self, name, func):
+    def trigger(self, name, *args, **kwargs):
+    def translate(self, x, y, z):
+    def handle_mouse_button(self, button, mode, x, y):
+    def handle_mouse_move(self, x, screen_y):
+    def handle_keystroke(self, key, x, screen_y):
+```
+
+
+
+#### Node
+``` python
+class Node(object):
+    """ Base class for scene elements """
+    def __init__(self):
+    def render(self):
+    def render_self(self):
+    def translate(self, x, y, z):
+    def rotate_color(self, forwards):
+    def scale(self, up):
+    def scalex(self, up):
+    def scaley(self, up):
+    def scalez(self, up):
+    def rotatex(self, angle):
+    def rotatey(self, angle):
+    def pick(self, start, direction, mat):
+    def select(self, select=None):
+```
+#### Primitive
+#### User Define Object
 
 
 ### 类间关系解释
