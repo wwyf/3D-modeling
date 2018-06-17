@@ -140,7 +140,10 @@ class Viewer(object):
         glFlush()
 
     def delete(self):
-        self.scene.node_list.remove(self.scene.selected_node)
+        try:
+            self.scene.node_list.remove(self.scene.selected_node)
+        except ValueError:
+            pass
     def init_view(self):
         """ initialize the projection matrix """
         xSize, ySize = glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT)
