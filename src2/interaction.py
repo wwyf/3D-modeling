@@ -101,6 +101,20 @@ class Interaction(object):
             self.trigger('load_new_scene', 'tt.save')
         elif key == 'z':
             self.trigger('place', 'line', x, y)
+        ##########################################v
+        elif key == '1':
+            self.trigger('scalex', up=False)
+        elif key == '4':
+            self.trigger('scalex', up=True)
+        elif key == '2':
+            self.trigger('scaley', up=False)
+        elif key == '5':
+            self.trigger('scaley', up=True)
+        elif key == '3':
+            self.trigger('scalez', up=False)
+        elif key == '6':
+            self.trigger('scalez', up=True)
+        ##########################################^
         elif key == GLUT_KEY_UP:
             self.trigger('scale', up=True)
         elif key == GLUT_KEY_DOWN:

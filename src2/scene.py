@@ -3,9 +3,7 @@ import numpy
 from node import Sphere, Cube, SnowFigure
 from Lines import *
 
-
 class Scene(object):
-
     # the default depth from the camera to place an object at
     PLACE_DEPTH = 15.0
 
@@ -106,3 +104,20 @@ class Scene(object):
         """ Scale the current selection """
         if self.selected_node is None: return
         self.selected_node.scale(up)
+
+    ################################################v
+    def scalex_selected(self, up):
+        """ Scale the current selection """
+        if self.selected_node is None: return
+        self.selected_node.scalex(up)
+
+    def scaley_selected(self, up):
+        """ Scale the current selection """
+        if self.selected_node is None: return
+        self.selected_node.scaley(up)
+
+    def scalez_selected(self, up):
+        """ Scale the current selection """
+        if self.selected_node is None: return
+        self.selected_node.scalez(up)
+    ################################################^

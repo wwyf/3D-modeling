@@ -84,6 +84,20 @@ class Node(object):
         s =  1.1 if up else 0.9
         self.scaling_matrix = numpy.dot(self.scaling_matrix, scaling([s, s, s]))
 
+    ############################################v
+    def scalex(self, up):
+        s =  1.1 if up else 0.9
+        self.scaling_matrix = numpy.dot(self.scaling_matrix, scaling([s, 1, 1]))
+
+    def scaley(self, up):
+        s =  1.1 if up else 0.9
+        self.scaling_matrix = numpy.dot(self.scaling_matrix, scaling([1, s, 1]))
+
+    def scalez(self, up):
+        s =  1.1 if up else 0.9
+        self.scaling_matrix = numpy.dot(self.scaling_matrix, scaling([1, 1, s]))
+    ############################################^
+
     def pick(self, start, direction, mat):
         """ Return whether or not the ray hits the object
            Consume:  start, direction    the ray to check
@@ -111,21 +125,17 @@ class Primitive(Node):
     def render_self(self):
         glCallList(self.call_list)
 
-
-
 class Sphere(Primitive):
     """ Sphere primitive """
     def __init__(self):
         super(Sphere, self).__init__()
         self.call_list = G_OBJ_SPHERE
 
-
 class Cube(Primitive):
     """ Cube primitive """
     def __init__(self):
         super(Cube, self).__init__()
         self.call_list = G_OBJ_CUBE
-
 
 class HierarchicalNode(Node):
     def __init__(self):
@@ -135,7 +145,6 @@ class HierarchicalNode(Node):
     def render_self(self):
         for child in self.child_nodes:
             child.render()
-
 
 class SnowFigure(HierarchicalNode):
     def __init__(self):

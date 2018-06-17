@@ -95,6 +95,11 @@ class Viewer(object):
         self.interaction.register_callback('place', self.place)
         self.interaction.register_callback('rotate_color', self.rotate_color)
         self.interaction.register_callback('scale', self.scale)
+        ########################################################v
+        self.interaction.register_callback('scalex', self.scalex)
+        self.interaction.register_callback('scaley', self.scaley)
+        self.interaction.register_callback('scalez', self.scalez)
+        ########################################################^
         self.interaction.register_callback('save_cur_scene', self.save_cur_scene)
         self.interaction.register_callback('load_new_scene', self.load_new_scene)
 
@@ -186,6 +191,20 @@ class Viewer(object):
     def scale(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
         self.scene.scale_selected(up)
+
+    ###############################################################v
+    def scalex(self, up):
+        """ Scale the selected Node. Boolean up indicates scaling larger."""
+        self.scene.scalex_selected(up)
+
+    def scaley(self, up):
+        """ Scale the selected Node. Boolean up indicates scaling larger."""
+        self.scene.scaley_selected(up)
+
+    def scalez(self, up):
+        """ Scale the selected Node. Boolean up indicates scaling larger."""
+        self.scene.scalez_selected(up)
+    ################################################################^
 
     def load_new_scene(self, file_name='t.save'):
         """ Load a file and make a Scene object, then display it """
