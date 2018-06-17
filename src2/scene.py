@@ -17,6 +17,10 @@ class Scene(object):
     def add_node(self, node):
         """ Add a new node to the scene """
         self.node_list.append(node)
+    
+    def remove_node(self, node):
+        """ remove an selected node from the scene """
+        self.node_list.remove(node)
 
     def render(self):
         """ Render the scene. This function simply calls the render function for each node. """
