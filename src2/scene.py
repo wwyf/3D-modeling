@@ -121,3 +121,14 @@ class Scene(object):
         if self.selected_node is None: return
         self.selected_node.scalez(up)
     ################################################^
+
+    def rotatex_selected(self, angle):
+        """ Rotate the current selection in axis X """
+        if self.selected_node is None: return
+        self.selected_node.rotatex(angle)
+
+    def rotatey_selected(self, angle):
+        """ Rotate the current selection in axis Y"""
+        if self.selected_node is None: return
+        self.selected_node.rotatey(angle)
+

@@ -7,6 +7,7 @@ from primitive import G_OBJ_CUBE, G_OBJ_SPHERE
 from aabb import AABB
 from transformation import scaling, translation
 import color
+import pyglm
 
 class Node(object):
     """ Base class for scene elements """
@@ -97,6 +98,16 @@ class Node(object):
         s =  1.1 if up else 0.9
         self.scaling_matrix = numpy.dot(self.scaling_matrix, scaling([1, 1, s]))
     ############################################^
+
+    def rotatex(self, angle):
+        """ NOTICE: NOT TESTED """
+        self.translation_matrix = glm.rotate(self.translation_matrix, angle, glm.vec3(1,0,0))
+    
+    def rotatey(self, angle):
+        """ NOTICE: NOT TESTED """
+        self.translation_matrix = glm.rotate(self.translation_matrix, angle, glm.vec3(0,1,0))
+
+        raise NotImplementedError("rotate z")
 
     def pick(self, start, direction, mat):
         """ Return whether or not the ray hits the object
