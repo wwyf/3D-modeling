@@ -197,6 +197,8 @@ class Viewer(object):
             self.interaction.trackball.drag_to(mouse_loc_x, mouse_loc_y, dx, dy)
         else:
             print('scene is no none')
+            # TODO:
+            # self.scene.selected_node
     ###############################################################v
     def scalex(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
