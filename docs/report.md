@@ -93,65 +93,71 @@ class Viewer(object):
 
 #### Scene类
 
-在3D建模中，一个及其重要的部分就是3D场景的建造。关于该场景的编写，我们编写了一个可扩展性极强的Scene类。该类的主要接口有
+在3D建模中，一个及其重要的部分就是3D场景的建造。关于该场景的编写，我们编写了一个可扩展性极强的Scene类。
 
-关于该类的功能，可以概括为以下几个部分
+##### 维护的数据结构
+
+在场景类中,主要维护两个成员
+
+| 成员变量名称  | 作用                                                   |
+| ------------- | ------------------------------------------------------ |
+| node_list     | 存放存储在该场景中的各个节点。                         |
+| selected_node | 为该场景中被选中的节点，若没有被选中的节点，则为None。 |
+
+##### 该类的功能
+
+该类的功能，可以分为以下几个大类，并且每一类都有一些具体的函数。
+
+1. 渲染场景
+
+    | 函数名称 | 函数功能         |
+    | -------- | ---------------- |
+    | render   | 遍历渲染所有节点 |
 
 2. 对该场景内节点的管理
-2. 对场景内某节点的选择及对节点的操作
 
-Scene类与Viewer类之间的关系
+    | 函数名称    | 函数功能                 |
+    | ----------- | ------------------------ |
+    | place       | 在场景中增加预置模型     |
+    | add_node    | 在场景中增加一个节点     |
+    | remove_node | 删除场景中指定的一个节点 |
 
-```python
-class Scene(object):
-    def __init__(self)
-    def add_node(self, node)
-    def remove_node(self, node)
-    
-    def render(self)
-    
-    def pick(self, start, direction, mat)
-    def move_selected(self, start, direction, inv_modelview)
-    def place(self, shape, start, direction, inv_modelview)
-    def rotate_selected_color(self, forwards)
-    def scale_selected(self, up)
-    def scalex_selected(self, up)
-    def scaley_selected(self, up)
-    def scalez_selected(self, up)
-    def rotatex_selected(self, angle)
-    def rotatey_selected(self, angle)
-```
+3. 对“选中节点”功能的支持
+
+    | 函数名称 | 函数功能                                                   |
+    | -------- | ---------------------------------------------------------- |
+    | pick     | 在鼠标点击后，会调用这个函数，找到对应节点，从而”选中“节点 |
+
+4. 对该场景选中节点的操作
+
+    | 函数名称                                           | 函数功能           |
+    | -------------------------------------------------- | ------------------ |
+    | move_selected                                      | 移动所选节点       |
+    | scalex_selected /scaley_selected / scalez_selected | 对节点进行缩放操作 |
+    | rotatex_selected / rotatey_selected                | 对节点进行旋转操作 |
+    | rotate_selected_color                              | 改变所选节点的颜色 |
 
 
+##### 一些说明
 
-| 函数名称    | 函数功能                 |
-| ----------- | ------------------------ |
-| add_node    | 在场景中增加一个节点     |
-| remove_node | 删除场景中指定的一个节点 |
-|             |                          |
-|             |                          |
-|             |                          |
-|             |                          |
-|             |                          |
-|             |                          |
-|             |                          |
+注意到viewer中，`Scene`为场景的一个成员对象。Viewer通过调用`Scene`中提供的各个接口，对场景中的节点进行管理与操作。需要特别说明的是，该场景的职责重点在于节点`Node`对象的管理，以及将从`Viewer`类中得到的节点变换信息传达给指定的节点。对于节点本身的操作，并没有做过的干预，仅仅是调用节点`Node`的接口来实现节点的变换。
 
+#### Node类及其派生子类
 
-Scene
+Node类作为场景中一个个3D对象的基类，定义了在场景中的一个节点必须具有的操作，如平移，旋转，以及最终渲染节点内容的实现。
 
+TODO:
 
+#### Interaction类
 
-Interaction
-Node
-Primitive
-User Define Object
+TODO:
 
 
 ### 类间关系解释
 
 interaction类 与 scene 类 之间的关系
 
-
+Scene类与Viewer类之间的关系
 
 
 
