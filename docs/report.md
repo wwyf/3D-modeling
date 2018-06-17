@@ -30,64 +30,53 @@ Viewer类是整个项目的主类，负责各类初始化和整个模型的内�
 ``` python
 class Viewer(object):
     def __init__(self):
-        """ Initialize the viewer. """
         self.init_interface()
         self.init_opengl()
         self.init_scene()
         self.init_interaction()
         init_primitives()
-
     def init_interface(self):
-        """ initialize the window and register the render function """
-
     def init_opengl(self):
-        """ initialize the opengl settings to render the scene """
     def init_scene(self):
-        """ initialize the scene object and initial scene """
-
     def init_interaction(self):
-        """ init user interaction and callbacks """
-
     def main_loop(self):
-        glutMainLoop()
-
     def render(self):
-        """ The render pass for the scene """
     def delete(self):
     def init_view(self):
-        """ initialize the projection matrix """
     def get_ray(self, x, y):
-        """ Generate a ray beginning at the near plane, in the direction that the x, y coordinates are facing
-            Consumes: x, y coordinates of mouse on screen
-            Return: start, direction of the ray """
     def pick(self, x, y):
-        """ Execute pick of an object. Selects an object in the scene. """
-
     def place(self, shape, x, y):
-        """ Execute a placement of a new primitive into the scene. """
-
     def move(self, x, y):
-        """ Execute a move command on the scene. """
-
     def rotate_color(self, forward):
-        """ Rotate the color of the selected Node. Boolean 'forward' indicates direction of rotation. """
-
     def scale(self, up):
-        """ Scale the selected Node. Boolean up indicates scaling larger."""
-        """ right click. """
     def scalex(self, up):
-        """ Scale the selected Node. Boolean up indicates scaling larger."""
-
     def scaley(self, up):
-        """ Scale the selected Node. Boolean up indicates scaling larger."""
-
     def scalez(self, up):
-        """ Scale the selected Node. Boolean up indicates scaling larger."""
     def load_new_scene(self, file_name='t.save'):
-        """ Load a file and make a Scene object, then display it """
     def save_cur_scene(self, file_name='t.save'):
-        """ Save current scene object to a file using pickle """
 ```
+| 函数名称    | 函数功能                 |
+| ----------- | ------------------------ |
+| \_\_init\_\_    | 初始化窗口、opengl设定，初始化场景（例如场景的网格和坐标轴）、初始化用户交互设置。    |
+| init_interface | 利用glut产生窗口并初始化 |
+|init_opengl|opengl初始化，例如产生光源和阴影，设置背景色等|
+|init_scene|为场景绘制（水平面的）网格和坐标轴。在场景上放置若干个物体,作为初始化。|
+|create_samle_scene|在场景上放若干个（默认的）小球|
+|init_interaction|用于注册回调函数，处理诸如”添加物体“，”删除物体“，变换视角等|
+|main_loop|opengl的阻塞死循环，将控制权完全交给Opengl|
+|render  |主要指责是调用scene.render()，渲染出整个场景|
+|init_view |摄像机初始化。设置摄像机位置、角度、透视效果等|
+|get_ray| 光线追踪函数。当点击屏幕上某个点时，由于三维的图像被变换到二维的电脑屏幕上，鼠标点击的点可以对应三维世界中的一条直线。光线追踪函数用于确定该条直线。|
+|pick| 鼠标左键单击可以选中物体。本函数用于确定（和修改）单击后被选中的物体。调用scene.pick()|
+|place|按下某些按键后，向模型中放置物体时调用。调用scene.place()|
+|move| 移动选中的物体。调用scene.rotate_selected()|
+|rotate_color| 变换选中物体的颜色。调用scene.move_selected()|
+|scale| 用于缩放选中物体的大小。调用scene.scale_selected()|
+|mouse_drag| 鼠标拖拽时的回调函数。变换场景或旋转物体|
+|scale*(*是x，y，z)|调用scene.scale*_selected(),用于在某个坐标轴一侧伸缩物体|
+|load_new_scene|将当前场景的信息打包成文件|
+|svae_cur_scene|将当前场景的信息从文件载入
+
 
 
 
@@ -193,6 +182,28 @@ class Interaction(object):
 回调是通过`trigger`函数做到的。trigger函数接收一个函数名，和`*args`, `**kwargs`这两个通用参数。通过在字典中搜索函数名，代码会得到系列函数的列表，对这个列表中的每个函数，传递通用参数。
 
 如此即可做到，在事件发生时，每个注册了的函数都能得到响应，且参数能被正确地传递。
+``` python
+...
+    def init_interaction(self):
+        """ init user interaction and callbacks """
+        self.interaction = Interaction()
+        self.interaction.register_callback('pick', self.pick)
+        self.interaction.register_callback('move', self.move)
+        self.interaction.register_callback('place', self.place)
+        self.interaction.register_callback('rotate_color', self.rotate_color)
+        self.interaction.register_callback('scale', self.scale)
+        self.interaction.register_callback('delete', self.delete)
+        self.interaction.register_callback('scalex', self.scalex)
+        self.interaction.register_callback('scaley', self.scaley)
+        self.interaction.register_callback('scalez', self.scalez)
+        self.interaction.register_callback('save_cur_scene', self.save_cur_scene)
+        self.interaction.register_callback('load_new_scene', self.load_new_scene)
+        self.interaction.register_callback('mouse_drag', self.mouse_drag)
+```
+以上是经过注册的函数。其中`move`负责在鼠标左键拖拽时，移动场景。`pick`负责在鼠标点击时，选中物体。`place`负责放置物体。`rotate_color`负责在方向左右键按下时，修改颜色。`scale`负责在方向上下键按下时修改大小。`delete`负责删除物体。`scale*`负责沿着x, y, z三个轴中的一个，伸缩物体。`save_cur_scene`和`load_new_scene`负责保存目前的场景和载入场景。
+
+交互设计的代码极其繁杂，Iteraction需要能访问到绝大多数的变量。在平常（但低效）的实现中，我们可以把所有变量都设置为全局变量，Interaction类通过访问全局变量的方式修改整个程序的状态。但此处的注册、回调机制，允许大部分变量以局部变量的形式存在，只需要变量的作用域处于注册函数中即可。
+
 #### 高度解耦
 #### 
 
