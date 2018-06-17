@@ -1,6 +1,7 @@
 import sys
 import numpy
 from node import Sphere, Cube, SnowFigure
+from Lines import *
 
 
 class Scene(object):
@@ -79,6 +80,10 @@ class Scene(object):
         if shape == 'sphere': new_node = Sphere()
         elif shape == 'cube': new_node = Cube()
         elif shape == 'figure': new_node = SnowFigure()
+        elif shape == 'line':
+            startPoint = Point(-1, -1, -1)
+            endPoint = Point(1, 1, 1)
+            new_node = Line(startPoint, endPoint)
 
         self.add_node(new_node)
 
