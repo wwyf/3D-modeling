@@ -166,6 +166,28 @@ class Interaction(object):
 回调是通过`trigger`函数做到的。trigger函数接收一个函数名，和`*args`, `**kwargs`这两个通用参数。通过在字典中搜索函数名，代码会得到系列函数的列表，对这个列表中的每个函数，传递通用参数。
 
 如此即可做到，在事件发生时，每个注册了的函数都能得到响应，且参数能被正确地传递。
+``` python
+...
+    def init_interaction(self):
+        """ init user interaction and callbacks """
+        self.interaction = Interaction()
+        self.interaction.register_callback('pick', self.pick)
+        self.interaction.register_callback('move', self.move)
+        self.interaction.register_callback('place', self.place)
+        self.interaction.register_callback('rotate_color', self.rotate_color)
+        self.interaction.register_callback('scale', self.scale)
+        self.interaction.register_callback('delete', self.delete)
+        self.interaction.register_callback('scalex', self.scalex)
+        self.interaction.register_callback('scaley', self.scaley)
+        self.interaction.register_callback('scalez', self.scalez)
+        self.interaction.register_callback('save_cur_scene', self.save_cur_scene)
+        self.interaction.register_callback('load_new_scene', self.load_new_scene)
+        self.interaction.register_callback('mouse_drag', self.mouse_drag)
+```
+以上是经过注册的函数。其中`move`负责在鼠标左键拖拽时，移动场景。`pick`负责在鼠标点击时，选中物体。`place`负责放置物体。`rotate_color`负责在方向左右键按下时，修改颜色。`scale`负责在方向上下键按下时修改大小。`delete`负责删除物体。`scale*`负责沿着x, y, z三个轴中的一个，伸缩物体。`save_cur_scene`和`load_new_scene`负责保存目前的场景和载入场景。
+
+交互设计的代码极其繁杂，Iteraction需要能访问到绝大多数的变量。在平常（但低效）的实现中，我们可以把所有变量都设置为全局变量，Interaction类通过访问全局变量的方式修改整个程序的状态。但此处的注册、回调机制，允许大部分变量以局部变量的形式存在，只需要变量的作用域处于注册函数中即可。
+
 #### 高度解耦
 #### 
 
