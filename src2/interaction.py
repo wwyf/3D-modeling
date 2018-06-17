@@ -101,6 +101,8 @@ class Interaction(object):
             self.trigger('load_new_scene', 'tt.save')
         elif key == 'z':
             self.trigger('place', 'line', x, y)
+        elif key == 'd':
+            self.trigger('delete')
         ##########################################v
         elif key == '1':
             self.trigger('scalex', up=False)

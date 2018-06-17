@@ -162,6 +162,9 @@ class HierarchicalNode(Node):
     def render_self(self):
         for child in self.child_nodes:
             child.render()
+    def rotate_color(self, forwards):
+        for child in self.child_nodes:
+            child.rotate_color(forwards)
 
 class SnowFigure(HierarchicalNode):
     def __init__(self):

@@ -82,7 +82,7 @@ class Viewer(object):
         self.scene.add_node(hierarchical_node)
 
         startpoint = Point(1, 1, 1)
-        endpoint = Point(0, 0, 0)
+        endpoint = Point(-1, -1, -1)
         line_node = Line(startpoint, endpoint)
         self.scene.add_node(line_node)
 
@@ -95,6 +95,7 @@ class Viewer(object):
         self.interaction.register_callback('place', self.place)
         self.interaction.register_callback('rotate_color', self.rotate_color)
         self.interaction.register_callback('scale', self.scale)
+        self.interaction.register_callback('delete', self.delete)
         ########################################################v
         self.interaction.register_callback('scalex', self.scalex)
         self.interaction.register_callback('scaley', self.scaley)
@@ -138,6 +139,8 @@ class Viewer(object):
         # flush the buffers so that the scene can be drawn
         glFlush()
 
+    def delete(self):
+        self.scene.node_list.remove(self.scene.selected_node)
     def init_view(self):
         """ initialize the projection matrix """
         xSize, ySize = glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT)
