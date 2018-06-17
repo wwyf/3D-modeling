@@ -203,8 +203,8 @@ class Viewer(object):
         if self.scene.selected_node is None:
             self.interaction.trackball.drag_to(mouse_loc_x, mouse_loc_y, dx, dy)
         else:
-            # TODO:            
-            self.scene.rotatex_selected(0.1)
+            self.scene.rotatey_selected(dx / 100.0)
+            self.scene.rotatex_selected(-dy / 100.0)
     ###############################################################v
     def scalex(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
