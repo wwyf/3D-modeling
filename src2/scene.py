@@ -76,6 +76,7 @@ class Scene(object):
             Consume:  shape             the shape to add
                       start, direction  describes the Ray to move to
                       inv_modelview     is the inverse modelview matrix for the scene """
+        if self.selected_node is not None: return
         new_node = None
         if shape == 'sphere': new_node = Sphere()
         elif shape == 'cube': new_node = Cube()
