@@ -107,7 +107,37 @@ interaction类 与 scene 类 之间的关系
 
 
 #### 函数注册机制
+`Iteraction`类负责处理与用户交互有关的操作。例如键盘按下，鼠标左键、中键、右键的点击，鼠标的拖动等。由于用户交互无处不在，且用户的操作可能会涉及到整个程序绝大部分状态（例如变量等），如何解耦成为了极其关键的设计问题。
 
+在`Interaction`类中，所有“需要被Interaction类访问“的函数，需要主动向其注册。在注册后，这些函数成为用户操作的回调函数。
+``` python
+class Interaction(object):
+    ...
+    def register(self):
+        """ register callbacks with glut """
+        glutMouseFunc(self.handle_mouse_button)
+        glutMotionFunc(self.handle_mouse_move)
+        glutKeyboardFunc(self.handle_keystroke)
+        glutSpecialFunc(self.handle_keystroke)
+
+    def register_callback(self, name, func):
+        """ registers a callback for a certain event """
+        self.callbacks[name].append(func)
+```
+`register`函数向glut注册了常用的回调函数，例如鼠标回调和键盘回调等。
+
+`register_callback`函数供外部代码调用。外部代码在调用时，传递一个函数名（字符串）和函数引用。Interaction类会维护一个字典，将函数名（字符串）映射到函数的引用上。
+
+``` python
+...
+    def trigger(self, name, *args, **kwargs):
+        """ calls a callback, forwards the args """
+        for func in self.callbacks[name]:
+            func(*args, **kwargs)
+```
+回调是通过`trigger`函数做到的。trigger函数接收一个函数名，和`*args`, `**kwargs`这两个通用参数。通过在字典中搜索函数名，代码会得到系列函数的列表，对这个列表中的每个函数，传递通用参数。
+
+如此即可做到，在事件发生时，每个注册了的函数都能得到响应，且参数能被正确地传递。
 #### 高度解耦
 #### 
 
