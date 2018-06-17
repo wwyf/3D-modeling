@@ -7,7 +7,10 @@ from primitive import G_OBJ_CUBE, G_OBJ_SPHERE
 from aabb import AABB
 from transformation import scaling, translation
 import color
-import pyglm
+import glm
+
+def glm_matrix_to_np_matrix(glm_matrix):
+    return numpy.array([list(i) for i in list(glm_matrix)])
 
 class Node(object):
     """ Base class for scene elements """
@@ -17,6 +20,7 @@ class Node(object):
         self.aabb = AABB([0.0, 0.0, 0.0], self.sizevec)
         self.translation_matrix = numpy.identity(4)
         self.scaling_matrix = numpy.identity(4)
+        self.rotate_matrix = numpy.identity(4)
         self.selected = False
 
     def drawWireCuboid(self):
@@ -56,6 +60,7 @@ class Node(object):
         glPushMatrix()
         glMultMatrixf(numpy.transpose(self.translation_matrix))
         glMultMatrixf(self.scaling_matrix)
+        glMultMatrixf(self.rotate_matrix)
         cur_color = color.COLORS[self.color_index]
         glColor3f(cur_color[0], cur_color[1], cur_color[2])
         if self.selected:  # emit light if the node is selected
@@ -101,13 +106,14 @@ class Node(object):
 
     def rotatex(self, angle):
         """ NOTICE: NOT TESTED """
-        self.translation_matrix = glm.rotate(self.translation_matrix, angle, glm.vec3(1,0,0))
+        print("in the rotatex!")
+        self.rotate_matrix = numpy.dot(self.rotate_matrix, glm_matrix_to_np_matrix(glm.rotate(glm.mat4(1), angle, glm.vec3(1,0,0))))
     
     def rotatey(self, angle):
         """ NOTICE: NOT TESTED """
-        self.translation_matrix = glm.rotate(self.translation_matrix, angle, glm.vec3(0,1,0))
-
-        raise NotImplementedError("rotate z")
+        print("in the rotatex!")
+        self.rotate_matrix = numpy.dot(self.rotate_matrix, glm_matrix_to_np_matrix(glm.rotate(glm.mat4(1), angle, glm.vec3(0,1,0))))
+        # self.translation_matrix = glm.rotate(glm.mat4(self.translation_matrix.tolist()), angle, glm.vec3(0,1,0))
 
     def pick(self, start, direction, mat):
         """ Return whether or not the ray hits the object
