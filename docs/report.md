@@ -10,24 +10,24 @@
 
 ## 项目效果展示
 全局效果
-![image 1](../assets/1.png)
+![image 1](assets/1.png)
 鼠标中键按下拖动可以平移整个坐标轴，鼠标右键按下拖动旋转整个视图
-![image2](../assets/2.png)
+![image2](assets/2.png)
 鼠标移动到视图的任意一个地方，键盘`S` `C` `F` `Z`分别可用于产生球体、立方体、球串儿和线段
-![image3](../assets/3.png)
+![image3](assets/3.png)
 选中物体，键盘按下`D`可以删除此物体
-![image9](../assets/9.png)
+![image9](assets/9.png)
 鼠标左键选中物体的时候，物体会高亮，且显示正方体边框，比如我们选中红色小球
-![image4](../assets/4.png)
+![image4](assets/4.png)
 鼠标左键按下可以拖动物体
-![image5](../assets/5.png)
+![image5](assets/5.png)
 键盘`↑`和`↓`可以放缩物体大小，`←`和`→`可用于变换物体颜色
-![image6](../assets/6.png)
+![image6](assets/6.png)
 键盘`1` `2` `3`用于将物体沿xyz轴进行压缩
 键盘`4` `5` `6`用于将物体沿xyz轴进行拉伸
-![image7](../assets/7.png)
+![image7](assets/7.png)
 鼠标左线选中物体，接下来按下鼠标右键，可以对物体进行旋转
-![image8](../assets/8.png)
+![image8](assets/8.png)
 其次，按下`o`可以保存当前页面为我们定义的一种格式文件，按`L`可用于加载文件中的页面。
 ### 实现效果
 - 创建物体，删除物体
