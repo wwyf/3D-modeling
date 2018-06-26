@@ -155,11 +155,78 @@ class Viewer(object):
 
 Node类作为场景中一个个3D对象的基类，定义了在场景中的一个节点必须具有的操作，如平移，旋转，以及最终渲染节点内容的实现。
 
-TODO:[yb]
+``` python
+class Node(object):
+    def __init__(self):
+    def drawWireCuboid(self):
+    def render(self):
+    def render_self(self):
+    def translate(self, x, y, z):
+    def rotate_color(self, forwards):
+    def scale(self, up):
+    def scalex(self, up):
+    def scaley(self, up):
+    def scalez(self, up):
+    def rotatex(self, angle):
+    def rotatey(self, angle):
+    def pick(self, start, direction, mat):
+    def select(self, select=None):
+```
+Node类是场景中所有对象的基类。其私有变量中带存储着所有变换矩阵。包括与平移、旋转、缩放相关的矩阵。该类暴露了修改和设置这些矩阵的API。例如scale函数等。对一个元素的所有变换操作，都可以抽象成调用Node类实现的变换API。在Node类的render_self函数中，会自动把所有的变换矩阵相乘，对类的定点做坐标变换，然后再绘制图像。
 
+| 函数名称                                           | 函数功能           |
+| -------------------------------------------------- | ------------------ |
+|\_\_init\_\_|类的构造函数，将所有变换矩阵初始化为单位阵|
+|render|将所有变换矩阵相乘，得到复合变换，调用render_self做真正的渲染|
+| render_self| 该基类中，不实现本函数。会抛出NotImplementedError异常 |
+| translate| 平移API，平移到坐标x, y, z处 |
+| rotate_color| 改变物体颜色。这是通过修改color_index实现的|
+| scale / scalex / scaley / scalez| 等比例地、沿着x轴地、沿着y轴地、沿着z轴地缩放物体|
+| rotatex / rotatey | 绕着x轴、绕着y轴旋转|
+| pick | 返回鼠标的点击（射出的光线）是否击中（射穿）该物体|
+| select| 每次调用时，翻转物体的“被选中”状态|
+
+Node类提供了足够的抽象。更细致的物体类继承于Node类。
+下面介绍的Primitive类通过call-list机制，真正实现了Node类中没有实现的render_self操作。
+``` python
+class Primitive(Node):
+    def __init__(self):
+        super(Primitive, self).__init__()
+        self.call_list = None
+
+    def render_self(self):
+        glCallList(self.call_list)
+```
+首先在一个全局的init函数中，初始化所有的call-list，其中最重要的是基本集合图形的call-list，例如立方体和球体的call-list。在真正的渲染中，我们利用openGL提供的call-list机制，传入一个id，即可完成渲染操作。
+
+例如在下述代码中，将self.call_list初始化为G_OBJ_CUBE.
+
+``` python
+class Cube(Primitive):
+    """ Cube primitive """
+    def __init__(self):
+        super(Cube, self).__init__()
+        self.call_list = G_OBJ_CUBE
+```
+
+为了定义组合图形，我们还定义了类HierarchicalNode,其具体定义见下
+``` python
+class HierarchicalNode(Node):
+    def __init__(self):
+        super(HierarchicalNode, self).__init__()
+        self.child_nodes = []
+
+    def render_self(self):
+        for child in self.child_nodes:
+            child.render()
+    def rotate_color(self, forwards):
+        for child in self.child_nodes:
+            child.rotate_color(forwards)
+```
+self.child_nodes成员函数存储着一个列表。列表的每个元素都是一个Node的派生类。在render_self的实现中，该元素会递归地调用其所有部分的render_self.
 #### Interaction
 ``` python
-class Interaction(object):
+class Interaction(object)
     def __init__(self):
     def register(self):
     def register_callback(self, name, func):
