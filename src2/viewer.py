@@ -38,7 +38,7 @@ class Viewer(object):
         """ initialize the window and register the render function """
         glutInit()
         glutInitWindowSize(640, 480)
-        glutCreateWindow("3D Modeller")
+        glutCreateWindow("LigDraw, light and elegant")
         glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
         glutDisplayFunc(self.render)
 
@@ -206,7 +206,6 @@ class Viewer(object):
             self.scene.rotatex_selected(dy / 100.0)
             self.scene.rotatey_selected(dx / 100.0)
             print(dx, dy ,dx / 1000, dy / 1000)
-    ###############################################################v
     def scalex(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
         self.scene.scalex_selected(up)
@@ -218,7 +217,6 @@ class Viewer(object):
     def scalez(self, up):
         """ Scale the selected Node. Boolean up indicates scaling larger."""
         self.scene.scalez_selected(up)
-    ################################################################^
 
     def load_new_scene(self, file_name='t.save'):
         """ Load a file and make a Scene object, then display it """
@@ -233,8 +231,6 @@ class Viewer(object):
             pickle.dump(self.scene, f)
             print("save cur scene!!")
         # raise NotImplementedError("save scene function is not implemented!")
-
-
 
 if __name__ == "__main__":
     viewer = Viewer()
