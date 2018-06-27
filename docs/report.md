@@ -158,8 +158,8 @@ class Viewer(object):
 
 Node类作为场景中一个个3D对象的基类，定义了在场景中的一个节点必须具有的操作，如平移，旋转，以及最终渲染节点内容的实现。
 
-TODO:放一个以Node为基类的类继承图
 
+![](figure/2018-06-27-18-59-14.png)
 
 ``` python
 class Node(object):
@@ -327,7 +327,7 @@ class Interaction(object):
 
 以调用放大功能为例子，在这一个情境下说明各个类之间关系。并以修改该放大功能，增加交互操作，来说明此种代码组织方式的可扩展性。
 
-TODO:程序调用图，函数之间的调用关系
+![](docs/figure/triggle-call-graph.png)
 
 当我鼠标点击模块后，模块进入被选择状态。此时我按住鼠标并拖动鼠标，触发了我们已经在glut窗口管理程序注册好的回调函数`Interaction.hadle_mouse_move`,该函数截取一部分代码进行说明：
 

@@ -1,0 +1,51 @@
+@startuml
+class Node {
+-translation_matrix
+-scaling_matrix
+-rotate_matrix
+#color_index
+#selected
++render()
+~render_self()
++translate(x, y, z)
++rotate_color(forwards)
++scale(up)
++scalex(d)
++scaley(d)
++scalez(d)
++rotatex(angle)
++rotatey(angle)
++pick(start, direction, mat)
++select(status)
+}
+
+class Primitive {
+-call_list
++render_self()
+}
+
+class HierarchicalNode{
+-child_nodes[]
++render_self()
++rotate_color(forwards)
+}
+
+class Sphere{
+-call_list
++render_self()
+}
+
+class Cube{
+-call_list
++render_self()
+}
+
+Node  <|-- Primitive
+
+Node  <|-- HierarchicalNode
+
+Primitive <|-- Sphere
+
+Primitive <|-- Cube
+
+@enduml
