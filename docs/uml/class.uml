@@ -1,6 +1,14 @@
 @startuml
-class Car
-Driver - Car : drives >
-Car *- Wheel : have 4 >
-Car -- Person : < owns
+class Student {
+    Name
+}
+
+Student "0..*" -- "1..*" Course
+
+(Student , Course) . Enrollment
+
+class Enrollment {
+    drop()
+    cancel()
+}
 @enduml
