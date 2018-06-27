@@ -229,7 +229,13 @@ class HierarchicalNode(Node):
             child.rotate_color(forwards)
 ```
 self.child_nodes成员函数存储着一个列表。列表的每个元素都是一个Node的派生类。在render_self的实现中，该元素会递归地调用其所有部分的render_self.
-#### Interaction
+
+#### Interaction类『TODO:yf』
+
+Interaction类的最重要职责是：对用户交互产生的原始数据进行适当的处理，并调用Scene的接口，从而与后端进行联动。
+
+##### Interaction类接口
+
 ``` python
 class Interaction(object)
     def __init__(self):
@@ -242,11 +248,31 @@ class Interaction(object)
     def handle_keystroke(self, key, x, screen_y):
 ```
 
+##### 接口功能说明
 
-#### Interaction类『TODO:yf』
 
-#### Node
-``` python
+|接口名称|功能|
+|-|-|
+|register|将处理用户交互的函数注册到glut窗口管理程序上|
+|register_callback|注册回调函数|
+|trigger| 调用指定的回调函数|
+|translate|移动相机|
+|handle_mouse_button|处理鼠标按键动作|
+|handle_mouse_move| 处理鼠标移动|
+|handle_keystroke| 处理键盘事件|
+
+
+#### Node 与 Primitive
+
+在我们的3D建模工具中，图形数据我们是这样组织的。Scene类中由很多个Node类的对象，每一个Node类的对象就是一个基础的简单模型。
+
+Node类作为模型的抽象，内部具有了一个模型需要具有的所有数据，如模型外围方框大小，模型颜色，模型的平移，旋转，放大矩阵。同时，对于每一个模型而言，还有一个标志位标志着该模型是否被选中。除去数据成员，Node还写好了一个模型所应该具有的各种方法，如渲染模型，平移模型，旋转模型，放大模型。
+
+但是由于Node类没有实现`render_self`，因此Node类并不能够直接用做模型加载到场景中，实际上其他任何可用的模型，都继承于Node类，并在Node的基础上实现了自己的`render_self`,从而能够在统一接口的前提下，对不同的模型又有其定制化的功能和操作。
+
+##### Node接口的说明
+
+```python
 class Node(object):
     """ Base class for scene elements """
     def __init__(self):
@@ -263,23 +289,27 @@ class Node(object):
     def pick(self, start, direction, mat):
     def select(self, select=None):
 ```
-#### Primitive
-#### User Define Object
 
-TODO:[yf]
+对Node类的各个接口，功能描述如下：
 
 | 函数名称 | 函数作用 |
 | -------- | -------- |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
-|          |          |
+| render  |  调用opengl函数渲染模型        |
+| render_self | 不同模型定制化的渲染函数         |
+|translate  | 模型自身的平移         |
+|   rotate_color  |  模型的颜色        |
+| scale  |  控制模型大小        |
+| scalex |  控制模型x轴上的长度        |
+| scaley   | 控制模型x轴上的长度|
+| scalez | 控制模型z轴上的长度  |
+| rotatex | 模型在x轴上旋转         |
+| rotatey | 模型绕着y轴旋转| 
+| pick | 判断模型是否被选中 |
+| select | 切换选择状态 |
 
+##### 继承关系
+
+TODO:放一个以Node为基类的类继承图
 
 
 
